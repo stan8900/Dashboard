@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Residence Operations Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-row">
+          <button class="menu-button" id="menuToggle" type="button" aria-expanded="false" aria-controls="sideMenu" title="Menu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+          <div>
+          <p class="eyebrow">Residence operations</p>
+          <h1>Forms and backend checks</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <a class="profile-button" id="profileButton" href="./login.html" title="Profile and Microsoft auth">
+            <span class="avatar" id="profileAvatar" aria-hidden="true"></span>
+            <span class="sr-only">Profile and Microsoft auth</span>
+          </a>
+        </div>
+      </header>
+
+      <aside class="side-menu" id="sideMenu" aria-hidden="true">
+        <div class="side-menu-head">
+          <strong>Menu</strong>
+          <button class="text-button" id="menuClose" type="button">Close</button>
+        </div>
+        <button type="button" data-tab-target="dashboard">Dashboard</button>
+        <button type="button" data-tab-target="replacement">Replacement keys</button>
+        <button type="button" data-tab-target="lockout">Lockouts</button>
+        <button type="button" data-tab-target="checks">Backend checks</button>
+        <button type="button" data-tab-target="settings">Settings</button>
+        <a class="side-link" href="./login.html">Login</a>
+      </aside>
+      <div class="menu-scrim" id="menuScrim" hidden></div>
+
+      <section class="workspace">
+        <section class="panel main-panel">
+          <div class="nav-cluster">
+            <div class="tabs" role="tablist" aria-label="Dashboard sections">
+              <span class="tab-slider" aria-hidden="true"></span>
+              <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="dashboard">Dashboard</button>
+              <button class="tab" type="button" role="tab" aria-selected="false" data-tab="replacement">Replacement keys</button>
+              <button class="tab" type="button" role="tab" aria-selected="false" data-tab="lockout">Lockouts</button>
+              <button class="tab" type="button" role="tab" aria-selected="false" data-tab="checks">Checks</button>
+              <button class="tab" type="button" role="tab" aria-selected="false" data-tab="settings">Settings</button>
+            </div>
+            <div class="nav-search" role="search">
+              <span class="search-icon" aria-hidden="true"></span>
+              <input id="overviewSearch" placeholder="Student ID or room" aria-label="Search student ID or room" />
+            </div>
+          </div>
+
+          <section class="tab-view active" id="dashboard" role="tabpanel">
+            <div class="dashboard-layout">
+              <section class="dashboard-main">
+                <div class="dashboard-hero">
+                  <div>
+                    <p class="eyebrow">Live operations</p>
+                    <h2>Good morning, residence team</h2>
+                    <p>Monitor replacement keys, lockouts, charges, and follow-ups from one view.</p>
+                  </div>
+                </div>
+
+                <section class="summary-grid" aria-label="Dashboard summary">
+                  <button class="metric urgent" type="button" data-tab-target="checks">
+                    <span class="metric-label">Replacement sets overdue</span>
+                    <strong id="overdueCount">0</strong>
+                    <small>Not returned within 7 days</small>
+                  </button>
+                  <button class="metric warning" type="button" data-tab-target="checks">
+                    <span class="metric-label">Due within 48 hours</span>
+                    <strong id="dueSoonCount">0</strong>
+                    <small>Replacement sets to chase</small>
+                  </button>
+                  <button class="metric charge" type="button" data-tab-target="lockout">
+                    <span class="metric-label">Lockout charges</span>
+                    <strong id="chargeCount">0</strong>
+                    <small>Second lockout or more</small>
+                  </button>
+                  <button class="metric quiet" type="button" data-tab-target="checks">
+                    <span class="metric-label">Open records</span>
+                    <strong id="openCount">0</strong>
+                    <small>Active operational follow-up</small>
+                  </button>
+                </section>
+
+                <section class="chart-panel">
+                  <div class="section-heading">
+                    <div>
+                      <h2>Monthly activity</h2>
+                      <p id="chartTotal">0 events this year</p>
+                    </div>
+                    <div class="chart-controls" aria-label="Chart mode">
+                      <button class="chart-mode active" type="button" data-chart-mode="all">All</button>
+                      <button class="chart-mode" type="button" data-chart-mode="replacement">Keys</button>
+                      <button class="chart-mode" type="button" data-chart-mode="lockout">Lockouts</button>
+                      <button class="chart-mode" type="button" data-chart-mode="charges">Charges</button>
+                    </div>
+                  </div>
+                  <div class="bar-chart" id="monthlyChart" aria-label="Monthly activity chart"></div>
+                </section>
+              </section>
+
+              <aside class="dashboard-side">
+                <section class="side-card">
+                  <div class="section-heading">
+                    <div>
+                      <h2>Priority follow-up</h2>
+                      <p>Highest-risk records first.</p>
+                    </div>
+                  </div>
+                  <div class="priority-list" id="priorityList"></div>
+                </section>
+
+                <section class="side-card charge-card">
+                  <p class="eyebrow">Charge preview</p>
+                  <strong id="chargeValue">£0</strong>
+                  <span>Potential lockout charges</span>
+                </section>
+
+                <section class="side-card">
+                  <p class="eyebrow">Quick actions</p>
+                  <div class="quick-actions">
+                    <button type="button" data-tab-target="replacement"><span>New key set</span></button>
+                    <button type="button" data-tab-target="lockout"><span>New lockout</span></button>
+                    <button type="button" data-tab-target="checks"><span>Review checks</span></button>
+                  </div>
+                </section>
+              </aside>
+            </div>
+          </section>
+
+          <section class="tab-view" id="replacement" role="tabpanel">
+            <div class="section-heading">
+              <div>
+                <h2>Replacement keys</h2>
+                <p>Track seven-day return windows for temporary or replacement key sets.</p>
+              </div>
+            </div>
+
+            <form class="record-form" id="replacementRecordForm">
+              <div class="form-note wide">
+                <strong>Access Request - Replacement and Non Return of Key or Card</strong>
+                <span>Lost or broken item(s) must be returned within 7 days of the replacement date for the charge to be cancelled.</span>
+              </div>
+              <label>
+                Student number
+                <input id="replacementStudentId" inputmode="numeric" pattern="[0-9]+" required />
+              </label>
+              <label>
+                Building complex
+                <select id="replacementComplex" required>
+                  <option value="">Select complex</option>
+                  <option>Bishops Complex</option>
+                  <option>Lancaster Complex</option>
+                  <option>Faraday Complex</option>
+                  <option>Mill Hall</option>
+                  <option>Fleming Hall</option>
+                  <option>Galbraith Hall</option>
+                  <option>Isambard Complex</option>
+                  <option>Standard Halls</option>
+                </select>
+              </label>
+              <label>
+                Hall
+                <select id="replacementHall" required>
+                  <option value="">Select complex first</option>
+                </select>
+              </label>
+              <label>
+                Flat number
+                <input id="replacementFlat" inputmode="numeric" pattern="[0-9]+" required />
+              </label>
+              <label>
+                Room number
+                <input id="replacementRoom" inputmode="numeric" pattern="[0-9]+" required />
+              </label>
+              <label>
+                Replacement date
+                <input id="replacementIssued" type="date" required />
+              </label>
+              <label>
+                Returned date
+                <input id="replacementReturned" type="date" />
+              </label>
+              <label>
+                Charges explained
+                <select id="replacementChargeConfirm" required>
+                  <option value="">Confirm</option>
+                  <option>Yes</option>
+                </select>
+              </label>
+              <fieldset class="collected-field" id="replacementCollectedField" hidden>
+                <legend>Student collected</legend>
+                <div class="checkbox-group" id="replacementCollectedItems">
+                  <span>Select location first</span>
+                </div>
+              </fieldset>
+              <label>
+                Staff initials
+                <input id="replacementStaffInitials" required maxlength="6" />
+              </label>
+              <button class="primary-button" type="submit">Add replacement record</button>
+            </form>
+
+            <section class="paste-panel">
+              <div>
+                <h3>Paste backend rows</h3>
+                <p>Copy rows from Excel and paste them here. Rows mentioning the initials below will be displayed in the backend table.</p>
+              </div>
+              <label>
+                Staff initials filter
+                <input id="backendPasteInitials" maxlength="6" placeholder="SJ" />
+              </label>
+              <label class="wide">
+                Copied Excel rows
+                <textarea id="backendPasteRows" rows="5" placeholder="Paste copied Excel rows here"></textarea>
+              </label>
+              <div class="paste-actions">
+                <button class="primary-button" id="importBackendPaste" type="button">Import pasted rows</button>
+                <button class="text-button" id="clearBackendPaste" type="button">Clear pasted rows</button>
+              </div>
+              <p class="paste-status" id="backendPasteStatus">No pasted backend rows imported.</p>
+            </section>
+
+            <form class="filter-form" id="replacementFilterForm">
+              <label>
+                Student ID search
+                <input id="replacementStudentIdSearch" placeholder="Search ID" />
+              </label>
+              <label>
+                Key set search
+                <input id="replacementKeySetSearch" placeholder="Search key set" />
+              </label>
+              <label>
+                Issued date search
+                <input id="replacementIssuedSearch" type="date" />
+              </label>
+              <label>
+                Returned date search
+                <input id="replacementReturnedSearch" type="date" />
+              </label>
+              <button class="text-button" id="clearReplacementFilters" type="button">Clear</button>
+            </form>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Location</th>
+                    <th>Collected</th>
+                    <th>Replacement</th>
+                    <th>Due</th>
+                    <th>Returned</th>
+                    <th>Status</th>
+                    <th>MS Forms</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="replacementRows"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="tab-view" id="lockout" role="tabpanel">
+            <div class="section-heading">
+              <div>
+                <h2>Lockouts</h2>
+                <p>Record room access support and identify repeat lockouts for the 15 quid charge.</p>
+              </div>
+            </div>
+
+            <form class="record-form" id="lockoutRecordForm">
+              <label>
+                Student ID
+                <input id="lockoutStudentId" required />
+              </label>
+              <label>
+                Room
+                <input id="lockoutRoom" required />
+              </label>
+              <label>
+                Date
+                <input id="lockoutDate" type="date" required />
+              </label>
+              <label>
+                Staff member
+                <input id="lockoutStaff" required />
+              </label>
+              <label>
+                Access given by
+                <select id="lockoutSource">
+                  <option>Security</option>
+                  <option>Residence staff</option>
+                </select>
+              </label>
+              <label class="wide">
+                Notes
+                <textarea id="lockoutNotes" rows="3"></textarea>
+              </label>
+              <button class="primary-button" type="submit">Add lockout record</button>
+            </form>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Room</th>
+                    <th>Date</th>
+                    <th>Count</th>
+                    <th>Charge</th>
+                    <th>Staff</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="lockoutRows"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="tab-view" id="checks" role="tabpanel">
+            <div class="section-heading">
+              <div>
+                <h2>Backend checks</h2>
+                <p>Operational exceptions that need chasing or charging.</p>
+              </div>
+            </div>
+            <div class="check-list" id="checkList"></div>
+          </section>
+
+          <section class="tab-view" id="settings" role="tabpanel">
+            <div class="section-heading">
+              <div>
+                <h2>Settings</h2>
+                <p>Form and backend links are loaded from repo configuration.</p>
+              </div>
+            </div>
+
+            <div class="settings-grid">
+              <div class="shortcut">
+                <div>
+                  <h3>Replacement form</h3>
+                  <p>Use when a student has lost keys and receives a replacement set.</p>
+                </div>
+                <a id="replacementFormLink" href="#" aria-disabled="true">Open</a>
+              </div>
+
+              <div class="shortcut">
+                <div>
+                  <h3>Replacement backend</h3>
+                  <p>Check whether the replacement set was returned within 7 days.</p>
+                </div>
+                <a id="replacementBackendLink" href="#" aria-disabled="true">Open</a>
+              </div>
+
+              <div class="shortcut">
+                <div>
+                  <h3>Lockout form</h3>
+                  <p>Use when security or residence staff let a student into their room.</p>
+                </div>
+                <a id="lockoutFormLink" href="#" aria-disabled="true">Open</a>
+              </div>
+
+              <div class="shortcut">
+                <div>
+                  <h3>Lockout backend</h3>
+                  <p>Review repeat lockouts and chargeable entries.</p>
+                </div>
+                <a id="lockoutBackendLink" href="#" aria-disabled="true">Open</a>
+              </div>
+            </div>
+
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <template id="emptyStateTemplate">
+      <tr>
+        <td class="empty-state" colspan="7">No records yet.</td>
+      </tr>
+    </template>
+
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
