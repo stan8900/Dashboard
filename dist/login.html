@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login · Residence Operations Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell login-shell">
+      <header class="topbar">
+        <div class="brand-row">
+          <a class="menu-button back-button" href="./index.html" title="Back to dashboard">
+            <span aria-hidden="true"></span>
+          </a>
+          <div>
+            <p class="eyebrow">Residence operations</p>
+            <h1>Microsoft login</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <a class="profile-button" href="./login.html" title="Profile and Microsoft auth">
+            <span class="avatar" aria-hidden="true"></span>
+            <span class="sr-only">Profile and Microsoft auth</span>
+          </a>
+        </div>
+      </header>
+
+      <section class="login-panel panel">
+        <div class="login-copy">
+          <p class="eyebrow">CRM access</p>
+          <h2>Login before opening the dashboard.</h2>
+          <p id="loginStatus">Login required before opening the dashboard.</p>
+        </div>
+
+        <form class="profile-form login-form" id="profileForm">
+          <label>
+            Staff initials
+            <input id="staffInitials" required maxlength="6" placeholder="AB" />
+          </label>
+          <label>
+            Microsoft email
+            <input id="staffEmail" type="email" placeholder="name@domain.ac.uk" />
+          </label>
+          <div class="profile-actions">
+            <button class="primary-button" type="submit">Login with Microsoft</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script src="./login.js"></script>
+  </body>
+</html>
