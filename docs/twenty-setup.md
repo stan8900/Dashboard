@@ -124,7 +124,26 @@ Ignored `node_modules` symlinks point to the flash drive at the CRM root
 and in its 19 workspaces; these are not committed machine-specific settings.
 Keep the drive mounted.
 
-From `crm/`, use this shell environment for installing or running source mode:
+The dependency directories and Nx caches live inside an expandable 24 GB APFS
+disk image, `twenty-dependencies.sparseimage`, on the flash drive. exFAT's 128 KB
+allocation units made the small-file install unnecessarily large and slow;
+the APFS image provides normal small-file allocation. The drive itself retains
+its existing format. Source/workspace links inside the image resolve back to
+this checkout. Update those local links if you move the checkout.
+
+After reconnecting the drive, mount the image before installing or running
+Twenty (only if it is not already mounted):
+
+```sh
+export TWENTY_RUNTIME_DIR=/Volumes/USB/jarvis-cache/tmp/residence-twenty-runtime
+hdiutil attach -nobrowse -mountpoint "$TWENTY_RUNTIME_DIR/dependencies" \
+  "$TWENTY_RUNTIME_DIR/twenty-dependencies.sparseimage"
+```
+
+A local helper, `$TWENTY_RUNTIME_DIR/twenty-yarn`, selects the flash Node binary,
+sets these environment variables, and runs Yarn from this checkout's `crm/`.
+It is machine-specific and lives outside Git. Alternatively, from `crm/`, use
+this shell environment:
 
 ```sh
 export TWENTY_RUNTIME_DIR=/Volumes/USB/jarvis-cache/tmp/residence-twenty-runtime
@@ -133,10 +152,10 @@ export YARN_ENABLE_GLOBAL_CACHE=false
 export YARN_CACHE_FOLDER="$TWENTY_RUNTIME_DIR/yarn-cache"
 export YARN_GLOBAL_FOLDER="$TWENTY_RUNTIME_DIR/yarn-global"
 export YARN_INSTALL_STATE_PATH="$TWENTY_RUNTIME_DIR/install-state.gz"
-export NX_CACHE_DIRECTORY="$TWENTY_RUNTIME_DIR/nx-cache"
-export NX_WORKSPACE_DATA_DIRECTORY="$TWENTY_RUNTIME_DIR/nx-workspace-data"
+export NX_CACHE_DIRECTORY="$TWENTY_RUNTIME_DIR/dependencies/nx-cache"
+export NX_WORKSPACE_DATA_DIRECTORY="$TWENTY_RUNTIME_DIR/dependencies/nx-workspace-data"
 export NX_DAEMON=false
-export TMPDIR="$TWENTY_RUNTIME_DIR/tmp"
+export TMPDIR="$TWENTY_RUNTIME_DIR/dependencies/tmp"
 export LC_ALL=C
 node .yarn/releases/yarn-4.18.1.cjs install --immutable
 ```
@@ -193,3 +212,10 @@ LC_ALL=C "$TWENTY_RUNTIME_DIR/redis/bin/redis-cli" -h 127.0.0.1 -p 16379 shutdow
 Do not re-run `initdb` over an existing cluster. These services are started
 manually; they are not registered to run at login. See the verification record
 for the actual dependency, migration, and application startup results.
+
+After stopping all Twenty processes, detach its dependency image before ejecting
+the flash drive:
+
+```sh
+hdiutil detach "$TWENTY_RUNTIME_DIR/dependencies"
+```
