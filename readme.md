@@ -77,3 +77,35 @@ not automatically remove AGPL network-source obligations or grant Enterprise
 rights. Obtain advice on those obligations before offering a modified service to
 staff or other users. Vendoring Twenty does not by itself declare the existing
 dashboard AGPL-licensed.
+
+## Brunel Residence Context
+
+This project supports Brunel residence staff, including security and residence
+teams, with forms and backend checks. The existing workflows remain unchanged:
+
+- **Replacement keys:** record issued and returned dates; flag anything not
+  returned within 7 days.
+- **Lockouts:** record each time security or residence staff let a student into
+  their room; flag the second and every later lockout as a **£15 charge**.
+- **Shortcuts:** real form/backend links are configured in `dist/config.js`.
+- **Login page:** the default access gate; saved staff initials persist until a
+  refresh is requested.
+- **Backend Excel sync:** `REPLACEMENT_BACKEND_FILE_PATH` in root `.env` points
+  to the synced workbook on the laptop. `BACKEND_INITIALS` (for example `SJ`)
+  filters rows. The local server re-reads the latest file when the dashboard
+  loads or refreshes. Restart the server after changing `.env` itself.
+
+Brunel-specific details to confirm:
+
+| Detail | Value |
+| --- | --- |
+| Residence/hall names and room inventory | TODO: provide approved names and identifiers |
+| Staff roles and responsibilities | TODO: confirm roles, permissions, and charge approval responsibilities |
+| Residence team contact email | TODO: provide approved contact email |
+| Security team contact email | TODO: provide approved contact email |
+| Data protection/support contact email | TODO: provide approved contact email |
+| Replacement-key policy link | TODO: provide current policy URL |
+| Lockout/£15 charge policy link | TODO: provide current policy URL and counting/reset period |
+
+These are gaps, not assertions about Brunel policy. No live form links, workbook
+paths, student records, or staff contact details are added by this integration.
