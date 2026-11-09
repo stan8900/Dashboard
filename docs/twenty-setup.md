@@ -78,8 +78,9 @@ Sources: [Compose guide](https://docs.twenty.com/developers/self-host/capabiliti
 ## Source development: run your custom code
 
 Use `crm/.nvmrc` and `crm/package.json` as version authorities. The imported
-snapshot pins Node 26.12.1 and Yarn 4.18.1; this machine currently has Node
-20.15.0 and Yarn 1.22.22. Use a separate shell for Twenty so the dashboard's
+snapshot pins Node 26.12.1 and Yarn 4.18.1; this machine currently selects Node
+20.15.0. The outer Yarn launcher is 1.22.22, but `yarn --version` inside
+`crm/` correctly uses the vendored Yarn 4.18.1. Use a separate shell for Twenty so the dashboard's
 Node environment stays independent. Run from `crm/`:
 
 ```sh
@@ -112,3 +113,29 @@ targets; follow the upstream guide for database creation and credentials.
 Use synthetic data for development.
 
 Source: [Twenty local setup](https://docs.twenty.com/developers/contribute/capabilities/local-setup).
+
+## Flash-drive runtime on this laptop
+
+At the user's request, the Node 26.12.1 binary, Yarn downloads, global state,
+install state, and primary `crm/node_modules` are placed beneath
+`/Volumes/USB/jarvis-cache/tmp/residence-twenty-runtime`. The Node archive was
+checked against Node's published SHA-256 checksum. The source remains in `crm/`.
+The ignored `crm/node_modules` is a local symlink to the flash drive, not part
+of the subtree or a committed machine-specific setting. Keep the drive mounted.
+
+From `crm/`, use this shell environment for installing or running source mode:
+
+```sh
+export TWENTY_RUNTIME_DIR=/Volumes/USB/jarvis-cache/tmp/residence-twenty-runtime
+export PATH="$TWENTY_RUNTIME_DIR/node-v26.12.1-darwin-arm64/bin:$PATH"
+export YARN_ENABLE_GLOBAL_CACHE=false
+export YARN_CACHE_FOLDER="$TWENTY_RUNTIME_DIR/yarn-cache"
+export YARN_GLOBAL_FOLDER="$TWENTY_RUNTIME_DIR/yarn-global"
+export YARN_INSTALL_STATE_PATH="$TWENTY_RUNTIME_DIR/install-state.gz"
+node .yarn/releases/yarn-4.18.1.cjs install --immutable
+```
+
+This does not change the dashboard's Node version. Generated workspace-specific
+files can still need some internal disk space. Docker, database services, and
+successful dependency installation remain separate prerequisites; see the
+verification record before trying to start Twenty.
