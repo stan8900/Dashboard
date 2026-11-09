@@ -2,3 +2,23 @@
 node_modules/
 .DS_Store
 *.log
+
+# Twenty local environments (retain upstream templates).
+/crm/**/.env
+/crm/**/.env.*
+!/crm/**/.env.example
+!/crm/**/.env.*.example
+/crm/**/node_modules/
+/crm/**/dist/
+/crm/**/build/
+/crm/**/coverage/
+/crm/**/.nx/
+/crm/**/.cache/
+/crm/**/.local-storage/
+/crm/**/.yarn/cache/
+/crm/**/.yarn/unplugged/
+/crm/**/.yarn/install-state.gz
+# Named Docker volumes live outside Git; ignore local bind mounts and exports.
+/crm/**/docker-volumes/
+/crm/**/db-data/
+/crm/**/server-local-data/
