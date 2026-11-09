@@ -500,3 +500,5 @@ const main = () => {
   moduleIndexFiles.forEach(createTypeScriptFile);
 };
 main();
+// Toolchain workers can keep Node 26 alive after synchronous generation.
+process.exit(0);
