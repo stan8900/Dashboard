@@ -23,4 +23,4 @@ node_modules/
 /crm/**/db-data/
 /crm/**/server-local-data/
 # Also match the local flash-drive symlink (directory-only rules do not).
-/crm/node_modules
+/crm/**/node_modules

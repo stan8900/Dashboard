@@ -20,6 +20,9 @@ internal in the main Compose stack and published locally by development targets.
 None clashes with dashboard port **5500**. Keep root `.env` for the dashboard;
 Twenty uses its own ignored environment files. A placeholder-only Docker
 configuration is in [docs/twenty.env.example](docs/twenty.env.example).
+The native flash-drive setup uses PostgreSQL **55432** and Redis **16379**;
+its placeholder configuration is in
+[docs/twenty-native.env.example](docs/twenty-native.env.example).
 
 The upstream Docker image runs a release, not your local source edits. Use the
 source setup to customise Twenty code. No CRM data model or sync is built yet;

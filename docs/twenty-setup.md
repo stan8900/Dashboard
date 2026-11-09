@@ -80,8 +80,8 @@ Sources: [Compose guide](https://docs.twenty.com/developers/self-host/capabiliti
 Use `crm/.nvmrc` and `crm/package.json` as version authorities. The imported
 snapshot pins Node 26.12.1 and Yarn 4.18.1; this machine currently selects Node
 20.15.0. The outer Yarn launcher is 1.22.22, but `yarn --version` inside
-`crm/` correctly uses the vendored Yarn 4.18.1. Use a separate shell for Twenty so the dashboard's
-Node environment stays independent. Run from `crm/`:
+`crm/` correctly uses the vendored Yarn 4.18.1. Use a separate shell for
+Twenty so the dashboard's Node environment stays independent. Run from `crm/`:
 
 ```sh
 nvm install
@@ -117,11 +117,12 @@ Source: [Twenty local setup](https://docs.twenty.com/developers/contribute/capab
 ## Flash-drive runtime on this laptop
 
 At the user's request, the Node 26.12.1 binary, Yarn downloads, global state,
-install state, and primary `crm/node_modules` are placed beneath
+install state, and dependency directories are placed beneath
 `/Volumes/USB/jarvis-cache/tmp/residence-twenty-runtime`. The Node archive was
 checked against Node's published SHA-256 checksum. The source remains in `crm/`.
-The ignored `crm/node_modules` is a local symlink to the flash drive, not part
-of the subtree or a committed machine-specific setting. Keep the drive mounted.
+Ignored `node_modules` symlinks point to the flash drive at the CRM root
+and in its 19 workspaces; these are not committed machine-specific settings.
+Keep the drive mounted.
 
 From `crm/`, use this shell environment for installing or running source mode:
 
