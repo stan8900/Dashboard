@@ -133,6 +133,11 @@ export YARN_ENABLE_GLOBAL_CACHE=false
 export YARN_CACHE_FOLDER="$TWENTY_RUNTIME_DIR/yarn-cache"
 export YARN_GLOBAL_FOLDER="$TWENTY_RUNTIME_DIR/yarn-global"
 export YARN_INSTALL_STATE_PATH="$TWENTY_RUNTIME_DIR/install-state.gz"
+export NX_CACHE_DIRECTORY="$TWENTY_RUNTIME_DIR/nx-cache"
+export NX_WORKSPACE_DATA_DIRECTORY="$TWENTY_RUNTIME_DIR/nx-workspace-data"
+export NX_DAEMON=false
+export TMPDIR="$TWENTY_RUNTIME_DIR/tmp"
+export LC_ALL=C
 node .yarn/releases/yarn-4.18.1.cjs install --immutable
 ```
 
@@ -140,3 +145,51 @@ This does not change the dashboard's Node version. Generated workspace-specific
 files can still need some internal disk space. Docker, database services, and
 successful dependency installation remain separate prerequisites; see the
 verification record before trying to start Twenty.
+
+### Native services on the flash drive
+
+The user selected native PostgreSQL 16 and Redis. PostgreSQL 16.15 and Redis
+7.2.17 were built from checksum-verified upstream sources because current
+Homebrew bottles do not support this Mac's macOS 14.1. Build/download logs and
+sources are under the runtime directory; no Homebrew services were installed.
+PostgreSQL includes `uuid-ossp`, `unaccent`, and `citext`. Its build omits optional
+ICU, readline, and zlib support. This is an isolated development installation.
+
+The new PostgreSQL cluster is `pgdata/`, using role `postgres`, UTF-8 with C
+locale, and a generated password for TCP connections. Its password is stored
+locally in `pg-password.txt`, `pgpass`, and the ignored server `.env`; never
+commit these files.
+The dashboard's `.env` is untouched. Redis uses `redis-data/` and `redis.conf`.
+PostgreSQL uses TCP only because the drive's exFAT filesystem cannot host
+Unix sockets. Both services bind to loopback only and use dedicated ports **55432** and
+**16379**, respectively. These differ from upstream's default infrastructure
+ports **5432** and **6379**. No existing PostgreSQL 14 cluster is used.
+
+With `TWENTY_RUNTIME_DIR` set as above, start the existing native services:
+
+```sh
+LC_ALL=C "$TWENTY_RUNTIME_DIR/postgresql-16/bin/pg_ctl" \
+  -D "$TWENTY_RUNTIME_DIR/pgdata" -l "$TWENTY_RUNTIME_DIR/postgres.log" start
+LC_ALL=C "$TWENTY_RUNTIME_DIR/redis/bin/redis-server" "$TWENTY_RUNTIME_DIR/redis.conf"
+"$TWENTY_RUNTIME_DIR/postgresql-16/bin/pg_isready" -h 127.0.0.1 -p 55432
+"$TWENTY_RUNTIME_DIR/redis/bin/redis-cli" -h 127.0.0.1 -p 16379 ping
+```
+
+Use the ignored frontend/server `.env` files created for this local setup. For a
+new machine, fill [the native template](twenty-native.env.example) with fresh
+local values rather than reusing credentials. Run the source database setup and
+start commands above only after a successful dependency install. The database
+reset targets only the new disposable `default` development database.
+
+Stop Twenty's frontend, worker, and API first, then stop native services before
+unplugging the drive:
+
+```sh
+LC_ALL=C "$TWENTY_RUNTIME_DIR/postgresql-16/bin/pg_ctl" \
+  -D "$TWENTY_RUNTIME_DIR/pgdata" -m fast stop
+LC_ALL=C "$TWENTY_RUNTIME_DIR/redis/bin/redis-cli" -h 127.0.0.1 -p 16379 shutdown
+```
+
+Do not re-run `initdb` over an existing cluster. These services are started
+manually; they are not registered to run at login. See the verification record
+for the actual dependency, migration, and application startup results.
