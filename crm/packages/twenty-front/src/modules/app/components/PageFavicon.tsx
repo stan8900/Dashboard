@@ -11,7 +11,7 @@ export const PageFavicon = () => {
     <Helmet>
       <link
         rel="icon"
-        type="image/x-icon"
+        type={workspacePublicData?.logo ? undefined : 'image/svg+xml'}
         href={
           workspacePublicData?.logo
             ? (getImageAbsoluteURI({

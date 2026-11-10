@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { SettingsAccountsMessageChannelDetails } from '@/settings/accounts/components/SettingsAccountsMessageChannelDetails';
 import { useDeleteEmailGroupChannel } from '@/settings/accounts/hooks/useDeleteEmailGroupChannel';
@@ -261,7 +262,9 @@ export const SettingsWorkspaceCommunicationGroupChannelDetail = () => {
           <Section.Root>
             <Section.Header
               title={t`Sending domain`}
-              description={t`Add these records at your DNS provider. Twenty checks them automatically.`}
+              description={brandProductText(
+                t`Add these records at your DNS provider. Twenty checks them automatically.`,
+              )}
             />
             <StyledSendingDomainColumn>
               <StyledInputRow>

@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { type SpreadsheetColumns } from '@/spreadsheet-import/types/SpreadsheetColumns';
 import { styled } from '@linaria/react';
 import { themeCssVariables } from 'twenty-ui/theme';
@@ -103,7 +104,9 @@ export const ColumnGrid = ({
         <StyledGrid>
           <StyledGridRow height="32px">
             <StyledGridHeader position="left">{t`Imported data`}</StyledGridHeader>
-            <StyledGridHeader position="right">{t`Twenty fields`}</StyledGridHeader>
+            <StyledGridHeader position="right">
+              {brandProductText(t`Twenty fields`)}
+            </StyledGridHeader>
           </StyledGridRow>
           {columns.map((column, index) => {
             const userColumn = renderUserColumn(columns, index);

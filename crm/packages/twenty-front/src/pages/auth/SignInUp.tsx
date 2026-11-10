@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { StyledAuthContent } from '@/auth/components/StyledAuthContent';
 import { useSignInUp } from '@/auth/sign-in-up/hooks/useSignInUp';
 import { useSignInUpForm } from '@/auth/sign-in-up/hooks/useSignInUpForm';
@@ -122,7 +123,7 @@ export const SignInUp = () => {
     }
 
     if (isGlobalScope) {
-      return t`Welcome to Twenty`;
+      return brandProductText(t`Welcome to Twenty`);
     }
 
     const workspaceName = workspacePublicData?.displayName;

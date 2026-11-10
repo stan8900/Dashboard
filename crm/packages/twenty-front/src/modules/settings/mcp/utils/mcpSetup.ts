@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { MCP_SETUP } from '@/settings/mcp/constants/McpSetup';
 import { t } from '@lingui/core/macro';
 
@@ -70,7 +71,7 @@ export const buildGooseInstallLink = (mcpServerUrl: string) => {
     timeout: '300',
     id: MCP_SETUP.server.name,
     name: MCP_SETUP.server.displayName,
-    description: t`Access your Twenty workspace through MCP`,
+    description: brandProductText(t`Access your Twenty workspace through MCP`),
   });
 
   params.append(

@@ -1,3 +1,5 @@
+import { APP_DISPLAY_NAME } from '@/branding/constants/Branding';
+
 export const MCP_SETUP = {
   chatGptTwentyAppUrl:
     'https://chatgpt.com/apps/twenty/asdk_app_6a0ac8d7e28c8191a58ea65bb0ca3d5c',
@@ -11,7 +13,7 @@ export const MCP_SETUP = {
   },
   server: {
     name: 'twenty',
-    displayName: 'Twenty',
+    displayName: APP_DISPLAY_NAME,
   },
   clientDocsUrls: {
     augment: 'https://docs.augmentcode.com/setup-augment/mcp',

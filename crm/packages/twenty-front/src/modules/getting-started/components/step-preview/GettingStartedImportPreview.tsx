@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { GettingStartedStepPreview } from '@/getting-started/components/step-preview/GettingStartedStepPreview';
 import { GettingStartedStepPreviewBadge } from '@/getting-started/components/step-preview/GettingStartedStepPreviewBadge';
 import { type MessageDescriptor } from '@lingui/core';
@@ -201,11 +202,8 @@ export const GettingStartedImportPreview = () => {
         </StyledWires>
         <StyledSide>
           <StyledSideHeader>
-            <StyledTwentyLogo
-              src="/images/integrations/twenty-logo.svg"
-              alt=""
-            />
-            {t`Twenty fields`}
+            <StyledTwentyLogo src="/images/branding/bold.svg" alt="" />
+            {brandProductText(t`Twenty fields`)}
           </StyledSideHeader>
           {TARGET_FIELDS.map((field) => (
             <StyledPill key={field.id} data-side="target">

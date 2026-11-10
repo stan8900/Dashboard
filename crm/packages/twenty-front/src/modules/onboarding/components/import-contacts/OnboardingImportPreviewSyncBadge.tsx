@@ -69,7 +69,7 @@ export const OnboardingImportPreviewSyncBadge = () => {
           color={themeCssVariables.font.color.tertiary}
         />
       </StyledArrow>
-      <StyledTwentyLogo src="/images/integrations/twenty-logo.svg" alt="" />
+      <StyledTwentyLogo src="/images/branding/bold.svg" alt="" />
     </StyledBadge>
   );
 };

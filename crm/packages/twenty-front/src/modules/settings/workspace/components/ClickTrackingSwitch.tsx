@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { getToastOptionsFromError } from '@/error-handler/utils/getToastOptionsFromError';
 import { SettingsOptionCardContentSwitch } from '@/settings/components/SettingsOptions/SettingsOptionCardContentSwitch';
@@ -54,7 +55,9 @@ export const ClickTrackingSwitch = ({ divider }: ClickTrackingSwitchProps) => {
         <SettingsOptionCardContentSwitch
           Icon={IconClick}
           title={t`Track link clicks`}
-          description={t`Count clicks by routing campaign links through Twenty before the original page.`}
+          description={brandProductText(
+            t`Count clicks by routing campaign links through Twenty before the original page.`,
+          )}
           divider={divider}
           checked={currentWorkspace.isCampaignClickTrackingEnabled}
           disabled={loading}

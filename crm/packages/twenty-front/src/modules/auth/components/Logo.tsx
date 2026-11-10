@@ -1,3 +1,4 @@
+import { APP_DISPLAY_NAME, APP_LOGO_PATH } from '@/branding/constants/Branding';
 import { UndecoratedLink } from '@/ui/navigation/link/components/UndecoratedLink/UndecoratedLink';
 import { getWorkspaceAvatarColorSeed } from '@/workspace/utils/getWorkspaceAvatarColorSeed';
 import { styled } from '@linaria/react';
@@ -60,7 +61,7 @@ export const Logo = ({
   to = AppPath.SignInUp,
 }: LogoProps) => {
   const { redirectToDefaultDomain } = useRedirectToDefaultDomain();
-  const defaultPrimaryLogoUrl = `${window.location.origin}/images/icons/android/android-launchericon-192-192.png`;
+  const defaultPrimaryLogoUrl = `${window.location.origin}${APP_LOGO_PATH}`;
 
   const primaryLogoUrl = getImageAbsoluteURI({
     imageUrl: primaryLogo ?? defaultPrimaryLogoUrl,
@@ -81,6 +82,8 @@ export const Logo = ({
       {isUsingDefaultLogo ? (
         <UndecoratedLink to={to} onClick={() => redirectToDefaultDomain()}>
           <StyledPrimaryLogo
+            role="img"
+            aria-label={APP_DISPLAY_NAME}
             style={{ backgroundImage: `url(${primaryLogoUrl})` }}
           />
         </UndecoratedLink>

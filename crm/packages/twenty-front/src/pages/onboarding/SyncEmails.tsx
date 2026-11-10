@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { isCurrentUserLoadedState } from '@/auth/states/isCurrentUserLoadedState';
 import { clientConfigApiStatusState } from '@/client-config/states/clientConfigApiStatusState';
 import { isGoogleCalendarEnabledState } from '@/client-config/states/isGoogleCalendarEnabledState';
@@ -152,7 +153,9 @@ export const SyncEmails = () => {
           />
         }
         title={t`Start with your whole network`}
-        description={t`Twenty adds the people you email and meet, and keeps them up to date without manual data entry.`}
+        description={brandProductText(
+          t`Twenty adds the people you email and meet, and keeps them up to date without manual data entry.`,
+        )}
         actions={providerActions}
         onSkip={() => void handleSkipConfirm()}
       />

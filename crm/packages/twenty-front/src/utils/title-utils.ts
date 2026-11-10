@@ -1,3 +1,4 @@
+import { APP_DISPLAY_NAME } from '@/branding/constants/Branding';
 import { t } from '@lingui/core/macro';
 import { AppBasePath, AppPath, SettingsPath } from 'twenty-shared/types';
 
@@ -66,6 +67,6 @@ export const getPageTitleFromPath = (pathname: string): string => {
     case SettingsPathPrefixes.Community:
       return t`Community - Settings`;
     default:
-      return 'Twenty';
+      return APP_DISPLAY_NAME;
   }
 };

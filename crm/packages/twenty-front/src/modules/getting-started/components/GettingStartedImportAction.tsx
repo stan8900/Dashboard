@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { serializePlainTextAsAdvancedTextEditorDocument } from '@/advanced-text-editor/utils/serializePlainTextAsAdvancedTextEditorDocument';
 import { useCanSendAgentChatMessage } from '@/ai/hooks/useCanSendAgentChatMessage';
 import { useOpenAskAiPageWithPreprompt } from '@/ai/hooks/useOpenAskAiPageWithPreprompt';
@@ -98,7 +99,7 @@ export const GettingStartedImportAction = () => {
   const importFilesWithAi = async (files: File[]) => {
     const chatThreadId = await openAskAiPageWithPreprompt({
       serializedDocument: serializePlainTextAsAdvancedTextEditorDocument(
-        t(GETTING_STARTED_IMPORT_PROMPT),
+        brandProductText(t(GETTING_STARTED_IMPORT_PROMPT)),
       ),
       mode: 'SEND',
       files,

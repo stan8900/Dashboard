@@ -1,3 +1,4 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { OnboardingSkipDialog } from '@/onboarding/components/OnboardingSkipDialog';
 import { OnboardingSkipDialogAvatars } from '@/onboarding/components/OnboardingSkipDialogAvatars';
@@ -76,7 +77,7 @@ export const OnboardingInviteTeamSkipDialog = ({
               one: "Your invite isn't sent yet",
               other: "Your # invites aren't sent yet",
             })
-          : t`Twenty works better with your team`
+          : brandProductText(t`Twenty works better with your team`)
       }
       description={
         hasInviteEmails ? undefined : t`All it takes is their email.`

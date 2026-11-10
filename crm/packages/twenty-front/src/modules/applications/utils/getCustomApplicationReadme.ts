@@ -1,7 +1,8 @@
+import { brandProductText } from '@/branding/utils/brandProductText';
 import { t } from '@lingui/core/macro';
 
-export const getCustomApplicationReadme =
-  (): string => t`Everything you build directly in this workspace lives here. Every object, field, view or automation you add on top of the Standard app is grouped under Custom, so your schema changes, interface changes and workspace-specific logic stay in one place.
+export const getCustomApplicationReadme = (): string =>
+  brandProductText(t`Everything you build directly in this workspace lives here. Every object, field, view or automation you add on top of the Standard app is grouped under Custom, so your schema changes, interface changes and workspace-specific logic stay in one place.
 
 ## ✨ What you get
 
@@ -17,4 +18,4 @@ export const getCustomApplicationReadme =
 
 ## 💳 Billing
 
-**Free**: no credits, no metering.`;
+**Free**: no credits, no metering.`);
