@@ -59,6 +59,10 @@ Database/cache/bucket values use Railway references. Generate secrets privately;
 do not paste populated environments into this repo. Local laptop `.env` files,
 student data, and the dashboard workbook are not deployment inputs.
 
+Set both `NODE_PORT=3000` (the app listener) and `PORT=3000` (Railway's startup
+health-check port). The domain's target port alone does not configure health
+checks; leaving `PORT` unset can keep a healthy container in the deploying state.
+
 ## Deploying reviewed local source without a Git push
 
 ```sh
