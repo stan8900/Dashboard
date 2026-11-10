@@ -28,6 +28,12 @@ for name in files:
     if not name:
         continue
     path = Path(name)
+    if args.worker and len(path.parts) >= 2 and path.parts[0] == "packages":
+        if path.parts[1] not in {
+            "twenty-server", "twenty-emails", "twenty-shared",
+            "twenty-client-sdk", "twenty-oxlint-rules", "twenty-docker",
+        }:
+            continue
     if any(part in {"node_modules", ".git", ".nx", ".cache"} for part in path.parts):
         continue
     if (

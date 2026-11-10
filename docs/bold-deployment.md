@@ -76,8 +76,8 @@ The destination must be new. The exporter copies tracked CRM source (stage new
 reviewed files first), excludes local environments/builds/dependencies, and refuses unexpected
 symlinks. It creates a production-only Dockerfile from upstream, ending at the
 `twenty` stage for the web service and `twenty-server` for the worker. The worker
-does not rebuild or include the frontend, avoiding an unnecessary frontend build
-and its possible build timeout. It excludes the unused
+does not upload, rebuild, or include frontend packages, avoiding an unnecessary
+frontend build and its possible build timeout. It excludes the unused
 all-in-one development stages, which declare Docker volumes that Railway rejects.
 Configure each service explicitly before uploading. The helper previews the
 non-secret settings by default; add `--apply` to set them through Railway's public
