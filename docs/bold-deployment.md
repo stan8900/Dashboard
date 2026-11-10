@@ -63,18 +63,21 @@ student data, and the dashboard workbook are not deployment inputs.
 
 ```sh
 python3 crm/deploy/railway/prepare-source.py /absolute/path/to/new-source-directory
+python3 crm/deploy/railway/prepare-source.py /absolute/path/to/new-worker-directory --worker
 railway up /absolute/path/to/new-source-directory --path-as-root \
   --project c941bc9c-855a-44e4-958f-3a2cc5b83c3c \
   --environment production --service bold --detach
-railway up /absolute/path/to/new-source-directory --path-as-root \
+railway up /absolute/path/to/new-worker-directory --path-as-root \
   --project c941bc9c-855a-44e4-958f-3a2cc5b83c3c \
   --environment production --service worker --detach
 ```
 
-The destination must be new. The exporter copies tracked and non-ignored CRM
-source, excludes local environments/builds/dependencies, and refuses unexpected
+The destination must be new. The exporter copies tracked CRM source (stage new
+reviewed files first), excludes local environments/builds/dependencies, and refuses unexpected
 symlinks. It creates a production-only Dockerfile from upstream, ending at the
-`twenty` stage. It excludes the unused
+`twenty` stage for the web service and `twenty-server` for the worker. The worker
+does not rebuild or include the frontend, avoiding an unnecessary frontend build
+and its possible build timeout. It excludes the unused
 all-in-one development stages, which declare Docker volumes that Railway rejects.
 Configure each service explicitly before uploading. The helper previews the
 non-secret settings by default; add `--apply` to set them through Railway's public

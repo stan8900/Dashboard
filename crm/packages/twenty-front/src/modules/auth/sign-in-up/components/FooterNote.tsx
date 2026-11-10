@@ -1,8 +1,11 @@
 import { styled } from '@linaria/react';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { Trans } from '@lingui/react/macro';
 
 import { useWorkspaceBypass } from '@/auth/sign-in-up/hooks/useWorkspaceBypass';
-import { getTwentyWebsiteUrl } from '@/auth/utils/getTwentyWebsiteUrl';
+import {
+  BOLD_PRIVACY_PATH,
+  BOLD_TERMS_PATH,
+} from '@/branding/constants/PolicyLinks';
 import { useIsCurrentLocationOnAWorkspace } from '@/domain-manager/hooks/useIsCurrentLocationOnAWorkspace';
 import { ONBOARDING_CONTENT_BLOCK_WIDTH } from '@/onboarding/constants/OnboardingContentBlockWidth';
 import { themeCssVariables } from 'twenty-ui/theme';
@@ -59,7 +62,6 @@ const StyledSeparator = styled.span`
 
 export const FooterNote = () => {
   const { isOnAWorkspace } = useIsCurrentLocationOnAWorkspace();
-  const { i18n } = useLingui();
 
   const { shouldOfferBypass, shouldUseBypass, enableBypass } =
     useWorkspaceBypass();
@@ -67,20 +69,12 @@ export const FooterNote = () => {
   if (!isOnAWorkspace) {
     return (
       <StyledCopyContainer>
-        <Trans>By using Twenty, you agree to the</Trans>{' '}
-        <a
-          href={getTwentyWebsiteUrl(i18n.locale, 'terms')}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Trans>Read the Bold</Trans>{' '}
+        <a href={BOLD_TERMS_PATH} target="_blank" rel="noopener noreferrer">
           <Trans>Terms of Service</Trans>
         </a>{' '}
         <Trans>and</Trans>{' '}
-        <a
-          href={getTwentyWebsiteUrl(i18n.locale, 'privacy-policy')}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={BOLD_PRIVACY_PATH} target="_blank" rel="noopener noreferrer">
           <Trans>Privacy Policy</Trans>
         </a>
         .
@@ -98,19 +92,11 @@ export const FooterNote = () => {
           <StyledSeparator>•</StyledSeparator>
         </>
       )}
-      <a
-        href={getTwentyWebsiteUrl(i18n.locale, 'privacy-policy')}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href={BOLD_PRIVACY_PATH} target="_blank" rel="noopener noreferrer">
         <Trans>Privacy Policy</Trans>
       </a>
       <StyledSeparator>•</StyledSeparator>
-      <a
-        href={getTwentyWebsiteUrl(i18n.locale, 'terms')}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href={BOLD_TERMS_PATH} target="_blank" rel="noopener noreferrer">
         <Trans>Terms of Service</Trans>
       </a>
     </StyledLinksContainer>

@@ -177,8 +177,8 @@ export const useNavigationMenuItemAddOptions = ({
           onClick: () => {
             addItem({
               type: NavigationMenuItemType.LINK,
-              name: 'Twenty',
-              link: 'https://twenty.com',
+              name: 'Bold',
+              link: 'https://bold-production.up.railway.app',
               color: DEFAULT_NAVIGATION_MENU_ITEM_COLOR_LINK,
             });
           },

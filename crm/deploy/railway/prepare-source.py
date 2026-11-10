@@ -8,6 +8,7 @@ import subprocess
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("destination", type=Path)
+parser.add_argument("--worker", action="store_true", help="Build the server-only worker image")
 args = parser.parse_args()
 source = Path(__file__).resolve().parents[2]
 destination = args.destination.resolve()
@@ -17,7 +18,8 @@ if destination.is_relative_to(source):
     parser.error("Destination must be outside the CRM checkout.")
 
 files = subprocess.check_output(
-    ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "."],
+    ["git", "-c", "core.checkStat=minimal", "-c", "core.trustctime=false",
+     "ls-files", "-z", "--cached", "--", "."],
     cwd=source,
 ).decode().split("\0")
 destination.mkdir(parents=True)
@@ -50,7 +52,8 @@ dockerfile = (source / "packages/twenty-docker/twenty/Dockerfile").read_text()
 if "# Target: twenty-aws" not in dockerfile or "FROM twenty-server AS twenty\n" not in dockerfile:
     raise SystemExit("Upstream Docker stages changed; review production export first.")
 dockerfile = dockerfile.split("# Target: twenty-aws", 1)[0]
-(destination / "Dockerfile").write_text(dockerfile + "\nFROM twenty AS bold\n")
+target = "twenty-server" if args.worker else "twenty"
+(destination / "Dockerfile").write_text(dockerfile + f"\nFROM {target} AS bold\n")
 (destination / ".dockerignore").write_text(
     ".git\n**/node_modules\n**/.env\n**/.env.*\npackages/*/dist\npackages/*/build\n**/.nx\n**/.cache\n"
 )

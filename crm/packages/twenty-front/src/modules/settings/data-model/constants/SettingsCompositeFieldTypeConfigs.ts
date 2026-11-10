@@ -182,14 +182,16 @@ export const SETTINGS_COMPOSITE_FIELD_TYPE_CONFIGS = {
     ],
     exampleValues: doNotTranslate([
       {
-        primaryLinkUrl: 'twenty.com',
+        primaryLinkUrl: 'bold-production.up.railway.app',
         primaryLinkLabel: '',
-        secondaryLinks: [{ url: 'twenty.com', label: 'Twenty' }],
+        secondaryLinks: [
+          { url: 'bold-production.up.railway.app', label: 'Bold' },
+        ],
       },
       {
         primaryLinkUrl: 'github.com/twentyhq/twenty',
-        primaryLinkLabel: 'Twenty Repo',
-        secondaryLinks: [{ url: 'twenty.com', label: '' }],
+        primaryLinkLabel: 'Bold workspace',
+        secondaryLinks: [{ url: 'bold-production.up.railway.app', label: '' }],
       },
       {
         primaryLinkUrl: 'react.dev',

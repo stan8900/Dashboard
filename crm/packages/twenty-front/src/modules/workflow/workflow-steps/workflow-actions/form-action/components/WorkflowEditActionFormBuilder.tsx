@@ -39,7 +39,6 @@ import { useTheme, themeCssVariables } from 'twenty-ui/theme';
 import { useDebouncedCallback } from 'use-debounce';
 import { v4 } from 'uuid';
 import { FeatureFlagKey } from '~/generated-metadata/graphql';
-import { openUrlInNewTab } from '~/utils/openUrlInNewTab';
 
 export type WorkflowEditActionFormBuilderProps = {
   triggerType: WorkflowTriggerType | undefined;
@@ -287,16 +286,6 @@ export const WorkflowEditActionFormBuilder = ({
               }
               closeLabel={t`Close`}
               onDismiss={() => setIsCalloutVisible(false)}
-              action={
-                <Callout.Action
-                  type="button"
-                  onClick={() =>
-                    openUrlInNewTab(
-                      'https://docs.twenty.com/user-guide/workflows/capabilities/workflow-actions#form',
-                    )
-                  }
-                >{t`Learn more`}</Callout.Action>
-              }
             />
           </StyledCalloutContainer>
         )}

@@ -14,7 +14,7 @@ export const getStandardApplicationReadme = (): string =>
 
 ## 📌 Good to know
 
-- Installed on every workspace and maintained by Twenty
+- Installed on every workspace
 - Cannot be uninstalled: the rest of the workspace is built on it
 - Your own objects, fields and layouts live in the **Custom** app
 

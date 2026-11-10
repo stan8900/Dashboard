@@ -103,3 +103,13 @@ kept outside Git on the flash drive. Railway uses a separate empty database.
 See [Bold deployment and account storage](docs/bold-deployment.md) for the
 production topology, configuration template, and local-source deployment commands.
 The residence dashboard continues to run separately on port 5500.
+
+## Personal use and legal drafts
+
+The current Bold installation is for the owner's personal use. The supplied
+six-policy package is preserved in [internal legal drafts](docs/legal/bold-policy-drafts.md),
+version 0.1, **not for publication**. Its Uzbekistan-law references, proposed
+retention periods, operator identity, contacts, and implementation claims require
+the reviews and decisions recorded there; they are not published service terms.
+The public app uses Bold branding and a neutral unpublished-policy notice.
+Required open-source licence and attribution notices remain applicable.

@@ -1,148 +1,29 @@
-import { SettingsCard } from '@/settings/components/SettingsCard';
-import { SettingsDiscoveryHeroCard } from '@/settings/components/SettingsDiscoveryHeroCard';
+import { BoldPolicyLinks } from '@/branding/components/BoldPolicyLinks';
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
-import { SettingsLabContent } from '@/settings/lab/components/SettingsLabContent';
 import { SettingsPageLayout } from '@/settings/components/layout/SettingsPageLayout';
-import { styled } from '@linaria/react';
-import { Section } from 'twenty-ui/components/layout';
-import {
-  IconBrandX,
-  IconBriefcase,
-  IconTransform,
-  type IconComponent,
-} from 'twenty-ui/icon';
-import { useIcons } from 'twenty-ui/icon/provider';
-import { SettingsPath } from 'twenty-shared/types';
-import { getSettingsPath } from 'twenty-shared/utils';
-import { MOBILE_VIEWPORT, useTheme, themeCssVariables } from 'twenty-ui/theme';
-import coverDark from '~/pages/settings/community/assets/cover-dark.png';
-import coverLight from '~/pages/settings/community/assets/cover-light.png';
+import { SettingsLabContent } from '@/settings/lab/components/SettingsLabContent';
 import { useLingui } from '@lingui/react/macro';
-
-const SETTINGS_COMMUNITY_HERO_INSTANCE_ID_PREFIX = 'settings-community-hero';
-
-const StyledCardsGrid = styled.div`
-  display: grid;
-  gap: ${themeCssVariables.spacing[2]};
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  @media (max-width: ${MOBILE_VIEWPORT}px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const StyledFeaturesContent = styled.div`
-  display: grid;
-  gap: ${themeCssVariables.spacing[4]};
-`;
-
-type SettingsCommunityLink = {
-  href: string;
-  Icon: IconComponent;
-  iconColor: string;
-  cardTitle: string;
-};
+import { Section } from 'twenty-ui/components/layout';
 
 export const SettingsCommunity = () => {
   const { t } = useLingui();
-  const theme = useTheme();
-  const { getIcon } = useIcons();
-  const IconBrandDiscord = getIcon('IconBrandDiscord');
-
-  const socialLinks: SettingsCommunityLink[] = [
-    {
-      href: 'https://discord.com/invite/cx5n4Jzs57',
-      Icon: IconBrandDiscord,
-      iconColor: themeCssVariables.color.blue9,
-      cardTitle: t`Join our Discord`,
-    },
-    {
-      href: 'https://x.com/twentycrm',
-      Icon: IconBrandX,
-      iconColor: themeCssVariables.font.color.primary,
-      cardTitle: t`Follow us on X`,
-    },
-  ];
 
   return (
     <SettingsPageLayout
-      title={t`Community`}
-      links={[
-        {
-          children: t`Other`,
-          href: getSettingsPath(SettingsPath.Community),
-        },
-        { children: t`Community` },
-      ]}
+      title={t`Bold resources`}
+      links={[{ children: t`Resources` }]}
     >
       <SettingsPageContainer>
         <Section.Root>
-          <SettingsDiscoveryHeroCard
-            lightSrc={coverLight}
-            darkSrc={coverDark}
-            instanceIdPrefix={SETTINGS_COMMUNITY_HERO_INSTANCE_ID_PREFIX}
-            tabs={[]}
+          <Section.Header
+            title={t`Your Bold workspace`}
+            description={t`Contact your workspace administrator for help, access requests, or product updates.`}
           />
         </Section.Root>
-
+        <BoldPolicyLinks />
         <Section.Root>
-          <Section.Header
-            title={t`Join the community`}
-            description={t`Stay up to date with product news and community updates.`}
-          />
-          <StyledCardsGrid>
-            {socialLinks.map(({ href, Icon, iconColor, cardTitle }) => (
-              <SettingsCard
-                key={href}
-                href={href}
-                Icon={
-                  <Icon
-                    size={theme.icon.size.md}
-                    stroke={theme.icon.stroke.sm}
-                  />
-                }
-                iconColor={iconColor}
-                title={cardTitle}
-              />
-            ))}
-          </StyledCardsGrid>
-        </Section.Root>
-
-        <Section.Root>
-          <Section.Header
-            title={t`Partners`}
-            description={t`Hire a partner to help you implement and customize Twenty.`}
-          />
-          <SettingsCard
-            href="https://twenty.com/partners/list"
-            Icon={
-              <IconBriefcase
-                size={theme.icon.size.md}
-                stroke={theme.icon.stroke.sm}
-              />
-            }
-            title={t`Browse partners`}
-          />
-        </Section.Root>
-
-        <Section.Root>
-          <Section.Header
-            title={t`Features`}
-            description={t`Try our upcoming features. Note they are still in beta. Please bear with us and report any issues you find.`}
-          />
-          <StyledFeaturesContent>
-            <SettingsLabContent />
-            <SettingsCard
-              href="https://twenty.com/releases"
-              Icon={
-                <IconTransform
-                  size={theme.icon.size.md}
-                  stroke={theme.icon.stroke.sm}
-                />
-              }
-              title={t`Read changelog`}
-            />
-          </StyledFeaturesContent>
+          <Section.Header title={t`Experimental features`} />
+          <SettingsLabContent />
         </Section.Root>
       </SettingsPageContainer>
     </SettingsPageLayout>

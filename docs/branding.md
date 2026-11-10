@@ -25,6 +25,24 @@ licensing guidance remain applicable.
 
 No dashboard files or backend database records are changed by this rebrand.
 
+The subsequent personal-use branding update replaces the auth footer's vendor
+policy links, community promotions, privacy assertions, and DPA generation screens
+with Bold resources and neutral unpublished-policy notices. It also updates
+remaining product copy, email templates/default sender, MCP display labels, and
+new authenticator issuer labels. Existing authenticator secrets are unchanged.
+Actual billing-provider references use neutral provider wording; no vendor
+contract, certification, or premium licence is represented as belonging to Bold.
+
+The owner's six-policy package is kept in
+`docs/legal/bold-policy-drafts.md` at repository root, version 0.1, **INTERNAL
+DRAFT, NOT FOR PUBLICATION**. It is outside the CRM deployment context. Public
+`/legal/privacy.html` and `/legal/terms.html` contain only a notice that Bold's
+policies are not yet published. They contain no draft policy, TODO register,
+retention promise, legal operator identity, or acceptance claim. Required
+upstream credit is retained separately in `/legal/notices.html` and source
+licences. Technical package names, imports, and third-party author credits remain
+accurate. The owner confirmed personal use; access settings are unchanged.
+
 Verification: an isolated Chrome session rendered the welcome screen with title
 `Sign in or Create an account | Bold`, Bold social metadata, the Bold SVG
 favicon, and a Bold web-app manifest. All three brand assets returned HTTP 200;

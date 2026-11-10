@@ -114,7 +114,7 @@ const getBillingExceptionUserFriendlyMessage = (code: BillingExceptionCode) => {
     case BillingExceptionCode.BILLING_PARTNER_CODE_LOCKED:
       return msg`The partner code can no longer be added or changed. Please contact support.`;
     case BillingExceptionCode.BILLING_PARTNER_CODE_NOT_ELIGIBLE:
-      return msg`Partner codes only apply to new Twenty customers.`;
+      return msg`Partner codes only apply to new customers of the billing provider.`;
     case BillingExceptionCode.BILLING_SEAT_LIMIT_REACHED:
       return BILLING_SEAT_LIMIT_REACHED_MESSAGE;
     default:
