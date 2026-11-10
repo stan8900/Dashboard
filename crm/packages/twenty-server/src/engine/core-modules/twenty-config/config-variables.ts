@@ -660,6 +660,16 @@ export class ConfigVariables {
 
   @ConfigVariablesMetadata({
     group: ConfigVariablesGroup.STORAGE_CONFIG,
+    description:
+      'Use path-style S3 URLs. Disable for virtual-hosted-only providers.',
+    type: ConfigVariableType.BOOLEAN,
+  })
+  @ValidateIf((env) => env.STORAGE_TYPE === StorageDriverType.S_3)
+  @IsOptional()
+  STORAGE_S3_FORCE_PATH_STYLE = true;
+
+  @ConfigVariablesMetadata({
+    group: ConfigVariablesGroup.STORAGE_CONFIG,
     isSensitive: true,
     description:
       'S3 access key ID. Optional — omit to use the default AWS credential chain (IAM role, instance profile, etc.).',

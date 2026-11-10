@@ -82,7 +82,9 @@ export class FileStorageDriverFactory extends DriverFactoryBase<StorageDriver> {
           credentials: accessKeyId
             ? { accessKeyId, secretAccessKey }
             : fromNodeProviderChain({ clientConfig: { region } }),
-          forcePathStyle: true,
+          forcePathStyle: this.twentyConfigService.get(
+            'STORAGE_S3_FORCE_PATH_STYLE',
+          ),
           region: region ?? '',
         });
         break;

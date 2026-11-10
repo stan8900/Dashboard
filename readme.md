@@ -92,3 +92,14 @@ Brunel-specific details to confirm:
 
 These are gaps, not assertions about Brunel policy. No live form links, workbook
 paths, student records, or staff contact details are added by this integration.
+
+## Bold welcome and Railway
+
+The CRM's visible brand is Bold. Its welcome page uses the existing PostgreSQL
+account and password-hash storage, with demo credential prefilling disabled.
+The requested full reset includes accounts and workspaces; a private backup is
+kept outside Git on the flash drive. Railway uses a separate empty database.
+
+See [Bold deployment and account storage](docs/bold-deployment.md) for the
+production topology, configuration template, and local-source deployment commands.
+The residence dashboard continues to run separately on port 5500.
