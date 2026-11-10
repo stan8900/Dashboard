@@ -142,7 +142,10 @@ hdiutil attach -nobrowse -mountpoint "$TWENTY_RUNTIME_DIR/dependencies" \
 
 A local helper, `$TWENTY_RUNTIME_DIR/twenty-yarn`, selects the flash Node binary,
 sets these environment variables, and runs Yarn from this checkout's `crm/`.
-It is machine-specific and lives outside Git. Alternatively, from `crm/`, use
+It is machine-specific and lives outside Git. It checks that the dependency
+image is mounted, materialises an offloaded dashboard manifest when possible,
+and repairs executable bits on generated dependency CLI launchers. This avoids
+falling back to a globally installed Nest CLI; no global tools are modified. Alternatively, from `crm/`, use
 this shell environment:
 
 ```sh
@@ -219,3 +222,41 @@ the flash drive:
 ```sh
 hdiutil detach "$TWENTY_RUNTIME_DIR/dependencies"
 ```
+
+## Local compatibility patch
+
+`crm/packages/twenty-shared/scripts/generateBarrels.ts` explicitly exits after
+its synchronous `main()` completes. On this Node 26 setup, the unmodified
+script finished writing identical outputs but retained idle toolchain workers,
+which prevented Nx from advancing. The two-line fix is a separate local commit,
+not part of the upstream squash. Review it when pulling upstream changes;
+revisit the exit if upstream makes generation asynchronous.
+
+## Validated laptop start commands
+
+Use the prepared native flash setup on this laptop. After mounting the image and
+starting PostgreSQL/Redis as above, run each command in its own terminal:
+
+```sh
+export TWENTY_RUNTIME_DIR=/Volumes/USB/jarvis-cache/tmp/residence-twenty-runtime
+"$TWENTY_RUNTIME_DIR/twenty-yarn" nx start twenty-server --output-style=static
+"$TWENTY_RUNTIME_DIR/twenty-yarn" nx worker twenty-server --output-style=static
+"$TWENTY_RUNTIME_DIR/twenty-yarn" nx start twenty-front --output-style=static
+```
+
+The prepared development databases have already been migrated and seeded with
+upstream's synthetic demo data. Do not reset them during normal startup. Keep
+using root `npm start` for the separate dashboard at port 5500.
+
+The remote DOM generator at
+`crm/packages/twenty-front-component-renderer/scripts/remote-dom/generate-remote-dom-elements.ts`
+has the same two-line synchronous-completion fix as the shared barrel generator.
+Both finish writing unchanged generated outputs and then exit, allowing Nx to
+continue despite idle Node 26 toolchain workers.
+
+During setup, the dashboard manifest repeatedly became an unreadable macOS
+placeholder (125-byte metadata, zero bytes read). Read-only materialisation
+stopped recovering it. With explicit user approval, its exact committed 125
+bytes were restored using a fresh local file after in-place hydration proved
+unstable; Git hash `21c5b98acf0b91696c077888514e1de722dafd6c`
+confirmed no content change. No dashboard dependency or server code was changed.
