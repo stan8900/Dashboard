@@ -157,7 +157,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
         );
       }
     } catch {
-      enqueueToast({ status: 'error', children: t`Error deleting api key.` });
+      enqueueToast({ status: 'error', children: t`Error revoking API token.` });
     } finally {
       setIsLoading(false);
     }
@@ -172,7 +172,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
     if (!roleIdToUse) {
       enqueueToast({
         status: 'error',
-        children: t`A role must be selected for the API key`,
+        children: t`A role must be selected for the API token`,
       });
       return;
     }
@@ -218,7 +218,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
         if (!isNonEmptyString(apiKeyName)) {
           enqueueToast({
             status: 'error',
-            children: t`API key name cannot be empty`,
+            children: t`API token name cannot be empty`,
           });
           return;
         }
@@ -239,7 +239,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
     } catch {
       enqueueToast({
         status: 'error',
-        children: t`Error regenerating api key.`,
+        children: t`Error rotating API token.`,
       });
     } finally {
       setIsLoading(false);
@@ -256,7 +256,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
     <>
       {isDefined(apiKey) && (
         <SettingsPageLayout
-          title={apiKey.name || t`Unnamed API Key`}
+          title={apiKey.name || t`Unnamed API Token`}
           links={[
             {
               children: t`Workspace`,
@@ -271,7 +271,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
                 SETTINGS_DEVELOPERS_TABS.TABS_IDS.API,
               ),
             },
-            { children: apiKey.name || t`Unnamed API Key` },
+            { children: apiKey.name || t`Unnamed API Token` },
           ]}
         >
           <SettingsPageContainer>
@@ -279,22 +279,22 @@ export const SettingsDevelopersApiKeyDetail = () => {
               {apiKeyToken ? (
                 <>
                   <Section.Header
-                    title={t`API Key`}
-                    description={t`Copy this key as it will not be visible again`}
+                    title={t`API Token`}
+                    description={t`Copy this token now. Its secret will not be shown again.`}
                   />
                   <ApiKeyInput apiKey={apiKeyToken} />
                 </>
               ) : (
                 <>
                   <Section.Header
-                    title={t`API Key`}
-                    description={t`Regenerate an API key`}
+                    title={t`API Token`}
+                    description={t`Rotate this token if it is lost or may be exposed.`}
                   />
                   <StyledInputContainer>
                     <Button
                       startIcon={<IconRepeat />}
                       onClick={() => openDialog(REGENERATE_API_KEY_MODAL_ID)}
-                    >{t`Regenerate Key`}</Button>
+                    >{t`Rotate token`}</Button>
                     <StyledInfo>
                       {formatExpiration(apiKey?.expiresAt || '', true, false)}
                     </StyledInfo>
@@ -305,7 +305,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
             <Section.Root>
               <Section.Header
                 title={t`Name`}
-                description={t`Name of your API key`}
+                description={t`Name of your API token`}
               />
               <ApiKeyNameInput
                 apiKeyName={apiKeyName}
@@ -317,7 +317,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
             <Section.Root>
               <Section.Header
                 title={t`Role`}
-                description={t`What this API can do: Select a user role to define its permissions.`}
+                description={t`The server-enforced role that controls this token's record access.`}
               />
               <SettingsDevelopersRoleSelector
                 value={selectedRoleId}
@@ -328,7 +328,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
             <Section.Root>
               <Section.Header
                 title={t`Expiration`}
-                description={t`When the key will be disabled`}
+                description={t`When the token will be disabled`}
               />
               <SettingsTextInput
                 instanceId={`api-key-expiration-${apiKey?.id}`}
@@ -340,15 +340,27 @@ export const SettingsDevelopersApiKeyDetail = () => {
             </Section.Root>
             <Section.Root>
               <Section.Header
+                title={t`Audit identifier`}
+                description={t`Use this safe identifier to find this token's requests in the API access logs.`}
+              />
+              <SettingsTextInput
+                instanceId={`api-token-identifier-${apiKey.id}`}
+                value={apiKey.id}
+                disabled
+                fullWidth
+              />
+            </Section.Root>
+            <Section.Root>
+              <Section.Header
                 title={t`Danger zone`}
-                description={t`Delete this integration`}
+                description={t`Revoke this token immediately`}
               />
               <Button
                 startIcon={<IconTrash />}
                 onClick={() => openDialog(DELETE_API_KEY_MODAL_ID)}
                 variant="outline"
                 color="danger"
-              >{t`Delete`}</Button>
+              >{t`Revoke token`}</Button>
             </Section.Root>
           </SettingsPageContainer>
         </SettingsPageLayout>
@@ -357,32 +369,32 @@ export const SettingsDevelopersApiKeyDetail = () => {
         confirmationPlaceholder={confirmationValue}
         confirmationValue={confirmationValue}
         dialogId={DELETE_API_KEY_MODAL_ID}
-        title={t`Delete API key`}
+        title={t`Revoke API token`}
         subtitle={
           <Trans>
             Please type {`"${confirmationValue}"`} to confirm you want to delete
-            this API Key. Be aware that any script using this key will stop
-            working.
+            this API token. Any integration using it will stop working.
           </Trans>
         }
         onConfirmClick={deleteIntegration}
-        confirmButtonText={t`Delete`}
+        confirmButtonText={t`Revoke token`}
         loading={isLoading}
       />
       <ConfirmationDialog
         confirmationPlaceholder={confirmationValue}
         confirmationValue={confirmationValue}
         dialogId={REGENERATE_API_KEY_MODAL_ID}
-        title={t`Regenerate an API key`}
+        title={t`Rotate API token`}
         subtitle={
           <Trans>
-            If you’ve lost this key, you can regenerate it, but be aware that
-            any script using this key will need to be updated. Please type
+            This creates a replacement token and immediately revokes the current
+            token. Update JARVIS with the new secret before continuing. Please
+            type
             {`"${confirmationValue}"`} to confirm.
           </Trans>
         }
         onConfirmClick={regenerateApiKey}
-        confirmButtonText={t`Regenerate key`}
+        confirmButtonText={t`Rotate token`}
         loading={isLoading}
       />
     </>

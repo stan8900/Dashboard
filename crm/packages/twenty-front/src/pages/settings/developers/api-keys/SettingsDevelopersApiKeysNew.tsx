@@ -25,6 +25,10 @@ import {
 import { useNavigateSettings } from '~/hooks/useNavigateSettings';
 import { SETTINGS_DEVELOPERS_TABS } from '@/settings/developers/constants/SettingsDevelopersTabs';
 import { Section } from 'twenty-ui/components/layout';
+import { Button } from 'twenty-ui/primitives/input';
+
+const JARVIS_TOKEN_NAME = 'JARVIS Personal Assistant';
+const JARVIS_TOKEN_EXPIRATION_DAYS = 90;
 
 export const SettingsDevelopersApiKeysNew = () => {
   const { t, i18n } = useLingui();
@@ -133,7 +137,7 @@ export const SettingsDevelopersApiKeysNew = () => {
 
   return (
     <SettingsPageLayout
-      title={t`New key`}
+      title={t`New API token`}
       links={[
         {
           children: t`Workspace`,
@@ -148,7 +152,7 @@ export const SettingsDevelopersApiKeysNew = () => {
             SETTINGS_DEVELOPERS_TABS.TABS_IDS.API,
           ),
         },
-        { children: t`New Key` },
+        { children: t`New API Token` },
       ]}
       actionButton={
         <SaveAndCancelButtons
@@ -169,12 +173,28 @@ export const SettingsDevelopersApiKeysNew = () => {
       <SettingsPageContainer>
         <Section.Root>
           <Section.Header
+            title={t`JARVIS preset`}
+            description={t`Start with a 90-day token for your personal assistant. Select a restricted role below to control exactly which records JARVIS can read or change.`}
+          />
+          <Button
+            variant="outline"
+            onClick={() => {
+              setFormValues((previousValues) => ({
+                ...previousValues,
+                name: JARVIS_TOKEN_NAME,
+                expirationDate: JARVIS_TOKEN_EXPIRATION_DAYS,
+              }));
+            }}
+          >{t`Use JARVIS preset`}</Button>
+        </Section.Root>
+        <Section.Root>
+          <Section.Header
             title={t`Name`}
-            description={t`Name of your API key`}
+            description={t`Name of your API token`}
           />
           <SettingsTextInput
             instanceId="api-key-new-name"
-            placeholder={t`E.g. backoffice integration`}
+            placeholder={t`E.g. JARVIS Personal Assistant`}
             value={formValues.name}
             onKeyDown={(e) => {
               if (e.nativeEvent.isComposing || e.keyCode === 229) {
@@ -196,7 +216,7 @@ export const SettingsDevelopersApiKeysNew = () => {
         <Section.Root>
           <Section.Header
             title={t`Role`}
-            description={t`What this API can do: Select a user role to define its permissions.`}
+            description={t`Choose a dedicated integration role. Its object permissions are enforced by the server on every request.`}
           />
           <SettingsDevelopersRoleSelector
             value={formValues.roleId}
@@ -212,7 +232,7 @@ export const SettingsDevelopersApiKeysNew = () => {
         <Section.Root>
           <Section.Header
             title={t`Expiration Date`}
-            description={t`When the API key will expire.`}
+            description={t`When the API token will stop working.`}
           />
           <Select
             dropdownId="object-field-type-select"

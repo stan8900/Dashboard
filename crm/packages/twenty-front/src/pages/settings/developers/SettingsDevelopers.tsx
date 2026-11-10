@@ -144,8 +144,8 @@ export const SettingsDevelopers = () => {
 
             <Section.Root>
               <Section.Header
-                title={t`API Keys`}
-                description={t`Active API keys created by you or your team.`}
+                title={t`API Tokens`}
+                description={t`Permission-controlled tokens for JARVIS and other private integrations.`}
               />
               <StyledTableContainer isMobile={isMobile}>
                 <SettingsApiKeysTable />
@@ -155,7 +155,7 @@ export const SettingsDevelopers = () => {
                     size="sm"
                     to={getSettingsPath(SettingsPath.NewApiKey)}
                     variant="outline"
-                  >{t`Create API key`}</NavigationButton>
+                  >{t`Create API token`}</NavigationButton>
                 </TableFooter>
               </StyledTableContainer>
             </Section.Root>

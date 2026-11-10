@@ -104,6 +104,15 @@ See [Bold deployment and account storage](docs/bold-deployment.md) for the
 production topology, configuration template, and local-source deployment commands.
 The residence dashboard continues to run separately on port 5500.
 
+## Bold API and JARVIS
+
+Bold uses its existing bearer-token and custom-role authorization system for
+private integrations. The API-token screen includes a safe JARVIS preset that
+sets the name and a 90-day expiry while leaving the permission role for the
+owner to choose. See the [Bold API guide](docs/bold-api.md) for the verified
+REST routes, permission mapping, token creation, rotation, audit logging and a
+minimal JARVIS connection example.
+
 ## Personal use and legal drafts
 
 The current Bold installation is for the owner's personal use. The supplied
