@@ -239,14 +239,28 @@ starting PostgreSQL/Redis as above, run each command in its own terminal:
 
 ```sh
 export TWENTY_RUNTIME_DIR=/Volumes/USB/jarvis-cache/tmp/residence-twenty-runtime
-"$TWENTY_RUNTIME_DIR/twenty-yarn" nx start twenty-server --output-style=static
-"$TWENTY_RUNTIME_DIR/twenty-yarn" nx worker twenty-server --output-style=static
+# API, from the repository root:
+cd crm/packages/twenty-server
+LC_ALL=C "$TWENTY_RUNTIME_DIR/node-v26.12.1-darwin-arm64/bin/node" dist/main
+# Worker, in another terminal in the same server directory:
+LC_ALL=C "$TWENTY_RUNTIME_DIR/node-v26.12.1-darwin-arm64/bin/node" dist/queue-worker/queue-worker
+# Frontend, in another terminal (the helper selects the CRM directory):
 "$TWENTY_RUNTIME_DIR/twenty-yarn" nx start twenty-front --output-style=static
 ```
 
-The prepared development databases have already been migrated and seeded with
-upstream's synthetic demo data. Do not reset them during normal startup. Keep
-using root `npm start` for the separate dashboard at port 5500.
+The native CRM database is migrated and empty after the requested full reset;
+the earlier synthetic demo accounts and records have been removed. Do not reset
+it during normal startup. Keep using root `npm start` for the separate dashboard
+at port 5500.
+
+Generated server `dist` now links to the flash APFS image to avoid laptop disk
+exhaustion. The validated server start commands above use that compiled output.
+The Nx server `start` and `build` targets remove `dist`, so they can replace the
+link and write back onto the laptop. For native rebuilds, preserve the link and
+use Nest directly with the private flash `native-nest-cli.json` configuration
+(`compilerOptions.allowOutsidePaths=true` for the linked output). Nest requires
+its `--config` path relative to the server directory. The production Railway
+build uses ordinary container paths and needs no flash-specific settings.
 
 The remote DOM generator at
 `crm/packages/twenty-front-component-renderer/scripts/remote-dom/generate-remote-dom-elements.ts`
