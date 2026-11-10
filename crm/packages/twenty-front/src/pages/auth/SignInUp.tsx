@@ -129,7 +129,7 @@ export const SignInUp = () => {
     const workspaceName = workspacePublicData?.displayName;
 
     if (!workspaceName) {
-      return t`Welcome to your workspace`;
+      return brandProductText(t`Welcome to Twenty`);
     }
 
     return t`Welcome, ${workspaceName}.`;

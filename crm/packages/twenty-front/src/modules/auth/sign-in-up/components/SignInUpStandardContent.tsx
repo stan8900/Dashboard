@@ -1,4 +1,5 @@
 import { Logo } from '@/auth/components/Logo';
+import { BoldWelcome } from '@/branding/components/BoldWelcome';
 import { StyledAuthContent } from '@/auth/components/StyledAuthContent';
 import { Title } from '@/auth/components/Title';
 import { AnimatedEaseIn } from '@/auth/components/internal/AnimatedEaseIn/AnimatedEaseIn';
@@ -54,6 +55,9 @@ export const SignInUpStandardContent = ({
       <StyledTitleContainer>
         <Title animate>{title}</Title>
       </StyledTitleContainer>
+      {!workspacePublicData && signInUpStep === SignInUpStep.Init && (
+        <BoldWelcome />
+      )}
       <StyledFormContainer>{signInUpForm}</StyledFormContainer>
       {signInUpStep === SignInUpStep.WorkspaceSelection && (
         <WorkspaceSelectionFooter />
